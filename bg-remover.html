@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>BG Remover</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; -webkit-tap-highlight-color: transparent; }
+        
+        body {
+            background: #050505;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            overflow: hidden;
+            position: relative;
+        }
+
+        
+        /* --- Animated Neon Background --- */
+        .bg-vibe {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .circle {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(70px);
+            opacity: 0.5;
+            animation: moveAround 10s infinite alternate ease-in-out;
+        }
+
+        .c1 { width: 300px; height: 300px; background: #00d2ff; top: -10%; left: -10%; }
+        .c2 { width: 350px; height: 350px; background: #ff00cc; bottom: -15%; right: -10%; animation-delay: -2s; }
+        .c3 { width: 200px; height: 200px; background: #9d50bb; top: 40%; left: 60%; opacity: 0.3; }
+
+        @keyframes moveAround {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            100% { transform: translate(40px, 60px) rotate(90deg); }
+        }
+
+        .bg-grid {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), 
+                            linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            z-index: -1;
+        }
+
+        /* --- Mobile-First Container --- */
+        .container {
+            background: rgba(15, 15, 15, 0.75);
+            backdrop-filter: blur(25px);
+            padding: 30px 20px; 
+            border-radius: 30px; 
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.8); 
+            width: 92%; 
+            max-width: 420px; 
+            max-height: 90vh;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 10;
+            overflow-y: auto; /* Results badhne par scroll hoga */
+        }
+
+        .premium-tag {
+            background: linear-gradient(90deg, #00d2ff, #9d50bb);
+            font-size: 0.6rem;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: 700;
+            display: inline-block;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        h2 { font-weight: 800; font-size: 1.8rem; margin-bottom: 5px; color: #fff; }
+        p { font-size: 0.8rem; color: #888; margin-bottom: 25px; }
+
+        /* --- Touch-Optimized Upload Box --- */
+        .upload-box {
+            background: rgba(255, 255, 255, 0.03);
+            border: 2px dashed rgba(255,255,255,0.15);
+            padding: 35px 20px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .upload-box:active { scale: 0.96; background: rgba(0, 210, 255, 0.08); }
+
+        /* --- Action Button --- */
+        .btn { 
+            background: #fff;
+            color: #000; 
+            border: none; 
+            padding: 16px 0; 
+            width: 100%; 
+            border-radius: 15px; 
+            cursor: pointer; 
+            font-weight: 700; 
+            font-size: 1rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+        .btn:active { background: #00d2ff; transform: scale(0.98); }
+
+        /* --- Results Grid --- */
+        #resultsArea { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 12px; 
+            margin-top: 10px; 
+        }
+
+        .result-card {
+            background: rgba(255,255,255,0.05);
+            padding: 10px;
+            border-radius: 15px;
+            border: 1px solid rgba(255,255,255,0.1);
+            animation: fadeIn 0.5s ease;
+        }
+
+        .result-card img {
+            width: 100%;
+            border-radius: 10px;
+            background-image: repeating-conic-gradient(#333 0% 25%, #222 0% 50%) 50% / 15px 15px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .dl-link {
+            color: #38ef7d;
+            text-decoration: none;
+            font-size: 0.75rem;
+            font-weight: bold;
+            display: block;
+            margin-top: 8px;
+        }
+
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
+    </style>
+</head>
+<body>
+
+    <div class="bg-vibe">
+        <div class="bg-grid"></div>
+        <div class="circle c1"></div>
+        <div class="circle c2"></div>
+        <div class="circle c3"></div>
+    </div>
+
+    <div class="container">
+        <div class="premium-tag">Neural Bulk AI</div>
+        <div class="icon-magic" style="font-size: 2.2rem; margin-bottom: 10px;">
+            <i class="fa-solid fa-wand-sparkles"></i>
+        </div>
+        <h2>Background Remover</h2>
+        <p>Pro results in one tap.</p>
+        
+        <div class="upload-box" onclick="document.getElementById('imageInput').click()">
+            <i class="fa-solid fa-cloud-arrow-up" style="font-size: 2rem; margin-bottom: 10px; color: #00d2ff;"></i>
+            <br>
+            <input type="file" id="imageInput" accept="image/*" multiple style="display: none;">
+            <span id="fileName" style="color: #666; font-size: 0.85rem;">Tap to select photo(s)</span>
+        </div>
+        
+        <button class="btn" onclick="removeBulkBackground()">
+            Start AI Magic <i class="fa-solid fa-bolt"></i>
+        </button>
+        
+        <div id="mainLoader" style="display: none; margin: 10px; color: #00d2ff; font-size: 0.8rem;">
+            <i class="fa-solid fa-atom fa-spin"></i> Processing your images...
+        </div>
+
+        <div id="resultsArea">
+            </div>
+    </div>
+
+    <script src="bg-script.js"></script>
+</body>
+</html>
